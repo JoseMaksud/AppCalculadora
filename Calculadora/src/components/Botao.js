@@ -7,6 +7,7 @@ export default props => {
   const estilosBotao = [estilos.botao]
   if (props.duplo) estilosBotao.push(estilos.botaoDuplo)
   if (props.triplo) estilosBotao.push(estilos.botaoTriplo)
+  if (props.laranja) estilosBotao.push(estilos.corLaranja)
 
   return (
     <TouchableHighlight>
@@ -32,4 +33,8 @@ const estilos = StyleSheet.create({
     botaoTriplo: {
       width: width / 4 * 3,
     },
+    corLaranja: {
+      backgroundColor: '#ff6400',
+      color: '#fff',
+    }
 })
