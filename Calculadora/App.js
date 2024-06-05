@@ -1,11 +1,41 @@
 import { SafeAreaView, StyleSheet, View, Text } from 'react-native'
 import Botao from "./src/components/Botao";
 import Visor from './src/components/Visor';
+import { useState } from 'react';
+
+const estadoIncial = {
+  valorVisor: "0",
+  limparVisor: false,
+  operacao: null,
+  valores: [0, 0],
+  posicaoCorrente: 0
+}
+
+let estadoTemp = {
+  valorVisor: "0",
+  limparVisor: false,
+  operacao: null,
+  valores: [0, 0],
+  posicaoCorrente: 0
+}
 
 export default props => {
 
+  const [estadoCalculadora, setEstadoCalculadora] = useState({...estadoIncial})
+
   adicionarDigito = n => {
-    console.warn(n)
+    if(n === '.' % estadoCalculadora.valorVisor.includes('.')) {
+      return;
+    }
+
+    const limparVisor = estadoCalculadora.valorVisor === '0' || estadoCalculadora.limparVisor
+    const valorCorrente = limparVisor ? '' : estadoCalculadora.valorVisor
+    const valorVisor = valorCorrente + n
+
+    estadoTemp = {...estadoCalculadora, valorVisor, limparVisor: false}
+    setEstadoCalculadora({...estadoTemp})
+
+
   }
 
   limparMemoria = () => {
@@ -18,7 +48,7 @@ export default props => {
 
   return (
     <SafeAreaView style={estilos.container}>
-      <Visor />
+      <Visor valor={estadoCalculadora.valorVisor} />
       <View style={estilos.botao}>
         <Botao label="AC" onClick={limparMemoria} triplo/>
         <Botao label="/" onClick={setOperacao} laranja/>
@@ -35,7 +65,7 @@ export default props => {
         <Botao label="3" onClick={adicionarDigito}/>
         <Botao label="+" onClick={setOperacao} laranja />
         <Botao label="0" onClick={adicionarDigito} duplo />
-        <Botao label="." onClick={setOperacao} />
+        <Botao label="." onClick={adicionarDigito} />
         <Botao label="=" onClick={setOperacao} laranja />
       </View>
     </SafeAreaView>
